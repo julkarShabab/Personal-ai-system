@@ -152,3 +152,52 @@
   cursor: pointer;
   font-size: 13px;
 }
+
+.edit-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.edit-form input,
+.edit-form textarea,
+.edit-form select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  font-family: inherit;
+}
+
+.edit-form input:focus,
+.edit-form textarea:focus,
+.edit-form select:focus {
+  border-color: #6c63ff;
+}
+
+.edit-form textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+.edit-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-edit {
+  background: #e8eaf6;
+  color: #3949ab;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.btn-edit:hover {
+  background: #c5cae9;
+}

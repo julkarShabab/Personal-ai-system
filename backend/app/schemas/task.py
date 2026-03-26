@@ -4,27 +4,26 @@ from datetime import datetime
 
 class TaskCreate(BaseModel):
     title: str
-    description: Optional[str] =None
+    description: Optional[str] = None
     deadline: Optional[datetime] = None
-    status:Optional[str] = "pending"
+    status: Optional[str] = "pending"
     priority: Optional[str] = "medium"
 
 class TaskUpdate(BaseModel):
-    title: str
-    description: Optional[str] =None
+    title: Optional[str] = None
+    description: Optional[str] = None
     deadline: Optional[datetime] = None
-    status:Optional[str] = None
+    status: Optional[str] = None
     priority: Optional[str] = None
 
 class TaskResponse(BaseModel):
-    id : int
+    id: int
     user_id: int
-    title:str
-    description: Optional[str]
-    deadline:Optional[str]
-    status:str
-    priority:str
+    title: str
+    description: Optional[str] = None
+    deadline: Optional[datetime] = None
+    status: str
+    priority: str
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = {"from_attributes": True}
