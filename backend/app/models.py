@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey,Integer,String,DateTime, Text
+from sqlalchemy import Column, ForeignKey,Integer,String,DateTime, Text,ForeignKey,Float
 from sqlalchemy.sql import func
 from app.database import Base
 
@@ -21,4 +21,15 @@ class Task(Base):
     deadline = Column(DateTime(timezone=True),nullable=True)
     status = Column(String,default="pending")
     priority = Column(String,default="medium")
+    created_at = Column(DateTime(timezone=True),server_default=func.now())
+
+class Expense(Base):
+    __tablename__ = "expenses"
+
+    id = Column(Integer,primary_key=True,index=True)
+    user_id = Column(Integer,ForeignKey("users.id"), nullable = False)
+    amount = Column(Float,nullable=False)
+    category = Column(String,nullable=False)
+    description = Column(Text,nullable=True)
+    date = Column(DateTime(timezone=True),server_default=func.now())
     created_at = Column(DateTime(timezone=True),server_default=func.now())
