@@ -1,5 +1,5 @@
 import { useState,useEffect } from "react";
-import {data, Link ,useNavigate} from 'react-router-dom'
+import {data, Link } from 'react-router-dom'
 
 import {
     Chart as ChartJS,
@@ -26,7 +26,7 @@ function Dashboard(){
     const [summary,setSummary] = useState(null)
     const [loading, setLoading] = useState(true)
     const [error,setError] = useState('')
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
 
     const getHeaders = () => ({
         'Content-Type': 'application/json',
@@ -68,10 +68,10 @@ function Dashboard(){
         fetchSummary()
     },[])
 
-    const handleLogout = () => {
-        localStorage.removeItem('token')
-        navigate('/login')
-    }
+    // const handleLogout = () => {
+    //     localStorage.removeItem('token')
+    //     navigate('/login')
+    // }
     if (loading) return <div className="loading">Loading your dashboard</div>
 
     if (error) return(
@@ -128,7 +128,7 @@ function Dashboard(){
       <div className="dashboard-header">
         <h1>👋 Welcome to your Dashboard</h1>
         <p>Here's an overview of your productivity and spending</p>
-        <button
+        {/* <button
           onClick={handleLogout}
           style={{
             marginTop: '8px',
@@ -142,7 +142,7 @@ function Dashboard(){
           }}
         >
           Logout
-        </button>
+        </button> */}
       </div>
 
       <div className="stats-grid">
