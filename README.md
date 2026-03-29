@@ -111,10 +111,10 @@ SECRET_KEY=your_secret_key_here
 |---|---|
 | Authentication | ✅ Complete |
 | Tasks Module | ✅ Complete |
-| Expenses Module | 🔧 In Progress |
-| Notes Module | 🟣 Planned |
-| Dashboard & Analytics | 🟣 Planned |
-| AI Assistant | 🟣 Planned |
+| Expenses Module | ✅ Complete |
+| Notes Module | ⏭️ Skipped for now |
+| Dashboard & Analytics | ✅ Complete |
+| AI Assistant |  🔧 In Progress |
 | AI Agent Actions | 🟣 Planned |
 | Deployment | 🟣 Planned |
 
