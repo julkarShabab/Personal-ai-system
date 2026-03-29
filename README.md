@@ -91,15 +91,9 @@ npm install
 npm run dev
 ```
 
----
 
-### 🔑 Environment Variables
 
-Create a `.env` file inside `/backend`:
-```env
-DATABASE_URL=postgresql://user:password@localhost/personal_ai_db
-SECRET_KEY=your_secret_key_here
-```
+
 
 ---
 
