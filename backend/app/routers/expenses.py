@@ -1,3 +1,4 @@
+from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
@@ -22,7 +23,7 @@ def create_expense(
             amount = data.amount,
             category = data.category,
             description = data.description,
-            date = data.date
+            date = data.date or datetime.utcnow()
 
         )
         db.add(expense)

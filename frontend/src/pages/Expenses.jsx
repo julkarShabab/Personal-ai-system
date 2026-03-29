@@ -1,10 +1,10 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import '../styles/expenses.css'
 
 const API = 'http://localhost:8000'
 
 const CATEGORIES = [
-    'Food', 'Transport', 'Shopping', 'Health',
+  'Food', 'Transport', 'Shopping', 'Health',
   'Education', 'Entertainment', 'Bills', 'Other'
 ]
 
@@ -20,67 +20,90 @@ function Expenses() {
   const [editAmount, setEditAmount] = useState('')
   const [editCategory, setEditCategory] = useState('')
   const [editDescription, setEditDescription] = useState('')
+  const [ error,setError] = useState('')
+  const [success,setSuccess] = useState('')
 
   const getHeaders = () => ({
-    'Conternt-Type': 'application/json',
+    'Content-Type': 'application/json',
     'Authorization': `Bearer ${localStorage.getItem('token')}`
   })
 
   const fetchExpenses = async () => {
-    const res = await fetch(`${API}/expenses/`,{headers:getHeaders()})
+    const res = await fetch(`${API}/expenses/`, { headers: getHeaders() })
     const data = await res.json()
-    if (res.ok) setExpenses(Array.isArray(data) ? data: [])
+    if (res.ok) setExpenses(Array.isArray(data) ? data : [])
   }
 
   const fetchSummary = async () => {
-    const res = await fetch(`${API}/expenses/summary`,{headers:getHeaders()})
+    const res = await fetch(`${API}/expenses/summary`, { headers: getHeaders() })
     const data = await res.json()
     if (res.ok) setSummary(data)
   }
 
-  useEffect( ()=>{
+  useEffect(() => {
     fetchExpenses()
-    fetchSummary
-  },[])
+    fetchSummary()
+  }, [])
+
+  const showMessage = (type,msg) => {
+    if(type === 'error') setError(msg)
+    else setSuccess(msg)
+    setTimeout(()=>{
+      setError('')
+      setSuccess('')
+    },3000)
+
+  }
 
   const handleAdd = async () => {
-    if(!amount || !category) return
+    if (!amount || !category){
+      showMessage('error','amount and category are required')
+      return
+    }
+    if (isNaN(amount) || parseFloat(amount) <=0){
+      showMessage('error','Amount must be positive number')
+      return
+    }
     setLoading(true)
-    try{
-        const res = await fetch(`${API}/expenses`,{
-            method:'POST',
-            headers:getHeaders(),
-            body: JSON.stringify({
-                amount:parseFloat(amount),
-                category,
-                description,
-                date:date || null
-            })
+    try {
+      const res = await fetch(`${API}/expenses`, {
+        method: 'POST',
+        headers: getHeaders(),
+        body: JSON.stringify({
+          amount: parseFloat(amount),
+          category,
+          description,
+          date: date ? new Date(date).toISOString() : new Date().toISOString()
         })
-        if(res.ok){
-            setAmount('')
-            setCategory('Food')
-            setDescription('')
-            setDate('')
-            fetchExpenses()
-            fetchSummary()
-        }
-    }catch (err){
-        alert('failed to add expense')
+      })
+      const data = await res.json()
+      if (res.ok) {
+        setAmount('')
+        setCategory('Food')
+        setDescription('')
+        setDate('')
+        fetchExpenses()
+        fetchSummary()
+        showMessage('success','expense added successfully')
+      }else{
+        showMessage('error',data.detail ||' failed ot add expense')
+      }
+    } catch (err) {
+      showMessage('error', 'Network error — is the server running?')
     }
     setLoading(false)
   }
 
-  const handleDelete = async(id) => {
-    await fetch(`${API}/expenses/${id}`,{
-        method:'DELETE',
-        headers:getHeaders()
+  const handleDelete = async (id) => {
+    await fetch(`${API}/expenses/${id}`, {
+      method: 'DELETE',
+      headers: getHeaders()
     })
     fetchExpenses()
     fetchSummary()
   }
 
-  const handleEditClick = (expense) =>{
+  const handleEditClick = (expense) => {
     setEditingExpense(expense.id)
     setEditAmount(expense.amount)
     setEditCategory(expense.category)
@@ -88,20 +111,20 @@ function Expenses() {
   }
 
   const handleEditSave = async (id) => {
-    await fetch(`${API}/expenses/${id}`,{
-        method:'PUT',headers:getHeaders(),
-        body:JSON.stringify({
-            amount: parseFloat(editAmount),
-            category:editCategory,
-            description:editDescription
-        })
+    await fetch(`${API}/expenses/${id}`, {
+      method: 'PUT', headers: getHeaders(),
+      body: JSON.stringify({
+        amount: parseFloat(editAmount),
+        category: editCategory,
+        description: editDescription
+      })
     })
     setEditingExpense(null)
     fetchExpenses()
     fetchSummary()
   }
 
-  return(
+  return (
     <div className="expenses-container">
       <div className="expenses-header">
         <h1>My Expenses</h1>
@@ -128,6 +151,8 @@ function Expenses() {
 
       <div className="add-expense-form">
         <h2>Add New Expense</h2>
+        {error && <p className="error-msg">{error}</p>}
+        {success && <p className="success-msg">{success}</p>}
         <div className="form-row">
           <input
             type="number"

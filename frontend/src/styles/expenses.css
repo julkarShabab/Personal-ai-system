@@ -169,3 +169,21 @@
   cursor: pointer;
   font-size: 13px;
 }
+
+.success-msg {
+  background: #e8f5e9;
+  color: #43a047;
+  padding: 10px 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.error-msg {
+  background: #ffe0e0;
+  color: #e53935;
+  padding: 10px 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
