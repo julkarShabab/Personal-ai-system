@@ -114,7 +114,7 @@ SECRET_KEY=your_secret_key_here
 | Expenses Module | ✅ Complete |
 | Notes Module | ⏭️ Skipped for now |
 | Dashboard & Analytics | ✅ Complete |
-| AI Assistant |  🔧 In Progress |
+| AI Assistant |🔧In Progress |
 | AI Agent Actions | 🟣 Planned |
 | Deployment | 🟣 Planned |
 
