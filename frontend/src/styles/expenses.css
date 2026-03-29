@@ -1,0 +1,171 @@
+.expenses-container {
+  padding: 32px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.expenses-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.expenses-header h1 {
+  font-size: 28px;
+  color: #333;
+}
+
+.summary-cards {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.summary-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  flex: 1;
+  text-align: center;
+}
+
+.summary-card h3 {
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.summary-card p {
+  font-size: 24px;
+  font-weight: 700;
+  color: #6c63ff;
+}
+
+.add-expense-form {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  margin-bottom: 24px;
+}
+
+.add-expense-form h2 {
+  margin-bottom: 16px;
+  font-size: 18px;
+  color: #555;
+}
+
+.form-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.add-expense-form input,
+.add-expense-form select,
+.add-expense-form textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  font-family: inherit;
+  margin-bottom: 12px;
+}
+
+.add-expense-form input:focus,
+.add-expense-form select:focus {
+  border-color: #6c63ff;
+}
+
+.btn-primary {
+  background-color: #6c63ff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-primary:hover {
+  background-color: #574fd6;
+}
+
+.expense-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.expense-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.expense-info h3 {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.expense-info p {
+  font-size: 13px;
+  color: #777;
+}
+
+.expense-amount {
+  font-size: 20px;
+  font-weight: 700;
+  color: #e53935;
+}
+
+.expense-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.expense-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.category-badge {
+  background: #ede7f6;
+  color: #6c63ff;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.btn-delete {
+  background: #ffe0e0;
+  color: #e53935;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.btn-edit {
+  background: #e8eaf6;
+  color: #3949ab;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}

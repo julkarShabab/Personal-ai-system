@@ -57,3 +57,66 @@ def get_summary(
         logger.error(f"errror fetching summary: {e}")
         raise HTTPException(status_code=500,detail="fail to fetch summary")
     
+@router.get("/",response_model=List[ExpenseResponse])
+def get_expenses(
+    db:Session = Depends(get_db),
+    current_user:User = Depends(get_current_user)
+):
+    try:
+        expenses = db.query(Expense).filter(
+            Expense.user_id == current_user.id
+        ).order_by(Expense.date.desc()).all()
+        return expenses
+    except Exception as e:
+        logger.error(f"error fetching expenses: {e}")
+        raise HTTPException(status_code=500,detail="failed to fetch expenses")
+    
+@router.put("/{expense_id}",response_model=ExpenseResponse)
+def update_expense(
+    expense_id: int,
+    data:ExpenseUpdate,
+    db: Session = Depends(get_db),
+    current_user:User = Depends(get_current_user)
+):
+    try:
+        expense = db.query(Expense).filter(
+            Expense.id == expense_id,
+            Expense.user_id == current_user.id
+        ).first()
+        if not expense:
+            raise HTTPException(status_code=404,detail="Expense not found")
+        for key,value in data.model_dump(exclude_unset=True).items():
+            setattr(expense,key,value)
+        db.commit()
+        db.refresh(expense)
+        return expense
+    except HTTPException:
+        raise
+    except Exception as e:
+        db.rollback()
+        logger.error(f"Error updating expenses: {e}")
+        raise HTTPException(status_code=500,detail="failed to update expenses")
+    
+@router.delete("/{expense_id}")
+def delete_expense(
+    expense_id: int,
+    db: Session = Depends(get_db),
+    current_user:User = Depends(get_current_user)
+):
+    try:
+        expense = db.query(Expense).filter(
+            Expense.id == expense_id,
+            Expense.user_id == current_user.id
+        ).first()
+        if not expense:
+            raise HTTPException(status_code=404,detail="Expense not found")
+        db.delete(expense)
+        db.commit()
+        return{"message": "Expense deleted successfully"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        db.rollback()
+        logger.error(f"Error deleting expense: {e}")
+        raise HTTPException(status_code=500,detail="failed ot delete expenses")
+    
