@@ -1,0 +1,139 @@
+.dashboard-container {
+  padding: 32px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.dashboard-header {
+  margin-bottom: 32px;
+}
+
+.dashboard-header h1 {
+  font-size: 28px;
+  color: #333;
+}
+
+.dashboard-header p {
+  color: #888;
+  margin-top: 4px;
+  font-size: 14px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.stat-card {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  text-align: center;
+}
+
+.stat-card .stat-icon {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.stat-card h3 {
+  font-size: 13px;
+  color: #888;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.stat-card p {
+  font-size: 26px;
+  font-weight: 700;
+  color: #6c63ff;
+}
+
+.stat-card.green p { color: #43a047; }
+.stat-card.red p { color: #e53935; }
+.stat-card.orange p { color: #fb8c00; }
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.chart-card {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+.chart-card h2 {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.quick-links {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.quick-link-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s;
+  text-decoration: none;
+  color: inherit;
+}
+
+.quick-link-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+}
+
+.quick-link-card .icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.quick-link-card h3 {
+  font-size: 15px;
+  color: #333;
+}
+
+.quick-link-card p {
+  font-size: 13px;
+  color: #888;
+  margin-top: 4px;
+}
+
+.error-banner {
+  background: #ffe0e0;
+  color: #e53935;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  font-size: 14px;
+}
+
+.loading {
+  text-align: center;
+  padding: 60px;
+  color: #888;
+  font-size: 16px;
+}
+
+@media (max-width: 768px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .charts-grid { grid-template-columns: 1fr; }
+  .quick-links { grid-template-columns: 1fr; }
+}
