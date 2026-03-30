@@ -32,7 +32,7 @@
 | Backend | FastAPI (Python) |
 | Database | PostgreSQL |
 | ORM | SQLAlchemy |
-| AI Layer | Claude API (Anthropic) |
+| AI Layer | Groq |
 | Authentication | JWT + bcrypt |
 
 ---
