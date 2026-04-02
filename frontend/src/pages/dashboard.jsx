@@ -203,11 +203,11 @@ function Dashboard(){
           <h3>Expenses</h3>
           <p>{summary.expenses.weekly_total.toFixed(0)} BDT this week</p>
         </Link>
-        <div className="quick-link-card" style={{ opacity: 0.5 }}>
-          <div className="icon">🤖</div>
-          <h3>AI Assistant</h3>
-          <p>Coming soon</p>
-        </div>
+        <Link to="/chat" className="quick-link-card">
+        <div className="icon">🤖</div>
+        <h3>AI Assistant</h3>
+        <p>Ask me anything</p>
+        </Link>
       </div>
     </div>
   )
