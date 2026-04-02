@@ -108,8 +108,8 @@ npm run dev
 | Expenses Module | ✅ Complete |
 | Notes Module | ⏭️ Skipped for now |
 | Dashboard & Analytics | ✅ Complete |
-| AI Assistant |🔧In Progress |
-| AI Agent Actions | 🟣 Planned |
+| AI Assistant |✅ Complete |
+| AI Agent Actions | 🔧In Progress |
 | Deployment | 🟣 Planned |
 
 ---
