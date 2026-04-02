@@ -30,7 +30,7 @@ Instructions:
 - If asked to add/delete/update something, tell the user that action feature is coming soon
 """
         response = client.chat.completions.create(
-            model="llama3-8b-8192",
+            model="llama-3.3-70b-versatile",
             messages=[
                 {"role":"system","content":system_prompt},
                 {"role":"user","content":user_message}

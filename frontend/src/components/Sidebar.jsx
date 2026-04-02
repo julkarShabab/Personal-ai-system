@@ -14,6 +14,7 @@ function Sidebar() {
         { path: '/dashboard', label: 'Dashboard', icon: '🏠' },
         { path: '/tasks', label: 'Tasks', icon: '✅' },
         { path: '/expenses', label: 'Expenses', icon: '💰' },
+        { path: '/chat', label: 'AI Assistant', icon: '🤖' },
     ]
     return (
         <div className="sidebar">
