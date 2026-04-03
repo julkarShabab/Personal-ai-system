@@ -2,12 +2,26 @@ from groq import Groq
 from dotenv import load_dotenv
 import os
 import logging
+import json
 
 load_dotenv()
 
 logger = logging.getLogger(__name__)
 
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+
+TOOLS = [
+    {
+        "type":"function",
+        "function":{
+            "name":"add_task",
+            "description":"Add a new task for the user",
+            "parameters":{
+                
+            }
+        }
+    }
+]
 
 def get_ai_response(user_message:str,context:str) -> str:
     try:
