@@ -4,11 +4,13 @@ import '../styles/chat.css'
 const API = 'http://localhost:8000'
 
 const SUGGESTIONS = [
-    "How much did I spend this week?",
-    "What tasks are pending?",
-    "What is my most expensive category?",
-    "How many tasks have I completed?",
-    "Summarize my expenses this month"
+  "How much did I spend this week?",
+  "What tasks are pending?",
+  "Add task: finish project report tomorrow",
+  "Add food expense 450 BDT",
+  "Complete task: check2",
+  "Edit food expense to 250 BDT",
+  "Summarize my expenses this month"
 ]
 
 function Chat() {
@@ -154,17 +156,17 @@ function Chat() {
 
             <div className="chat-input-area">
                 <textarea
-                placeholder="Ask me anything...(Enter to send,Shift + Enter to new line)"
-                value={input}
-                onChange={e => setInput(e.target.value)}
-                onKeyDown={handleKeyDown}
-                rows={1}
-                disabled={loading}/>
+                    placeholder="Ask me anything...(Enter to send,Shift + Enter to new line)"
+                    value={input}
+                    onChange={e => setInput(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    rows={1}
+                    disabled={loading} />
 
                 <button
-                className="send-btn"
-                onClick={() => sendMessage()}
-                disabled={ loading || !input.trim()}>{loading ? '...':'Send'}</button>
+                    className="send-btn"
+                    onClick={() => sendMessage()}
+                    disabled={loading || !input.trim()}>{loading ? '...' : 'Send'}</button>
 
             </div>
 
