@@ -146,7 +146,8 @@ Rules:
             tools=TOOLS,
             tool_choice="auto",
             max_tokens=1024,
-            temperature=0.7
+            temperature=0.7,
+            parallel_tool_calls=False
         )
 
         message = response.choices[0].message
@@ -189,7 +190,8 @@ Rules:
                 model="llama-3.3-70b-versatile",
                 messages=messages,
                 max_tokens=512,
-                temperature=0.7
+                temperature=0.7,
+                parallel_tool_calls=False
             )
 
             return final_response.choices[0].message.content

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from 'react'
 import '../styles/chat.css'
 
 const API = 'http://localhost:8000'
@@ -14,166 +14,219 @@ const SUGGESTIONS = [
 ]
 
 function Chat() {
-    const [messages, setMessages] = useState([])
-    const [input, setInput] = useState('')
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState('')
-    const messagesEndRef = useRef(null)
+  const [messages, setMessages] = useState([])
+  const [input, setInput] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [historyLoading, setHistoryLoading] = useState(true)
+  const messagesEndRef = useRef(null)
 
-    const getHeaders = () => ({
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-    })
+  const getHeaders = () => ({
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${localStorage.getItem('token')}`
+  })
 
-    const scrollBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages, loading])
+
+  // Load chat history on mount
+  useEffect(() => {
+    fetchHistory()
+  }, [])
+
+  const fetchHistory = async () => {
+    try {
+      setHistoryLoading(true)
+      const res = await fetch(`${API}/ai/history`, {
+        headers: getHeaders()
+      })
+      if (res.ok) {
+        const data = await res.json()
+        const formatted = data.map(msg => ({
+          role: msg.role,
+          content: msg.content,
+          time: new Date(msg.created_at).toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit'
+          })
+        }))
+        setMessages(formatted)
+      }
+    } catch (err) {
+      console.error('Failed to load chat history', err)
+    } finally {
+      setHistoryLoading(false)
+    }
+  }
+
+  const clearHistory = async () => {
+    try {
+      const res = await fetch(`${API}/ai/history`, {
+        method: 'DELETE',
+        headers: getHeaders()
+      })
+      if (res.ok) {
+        setMessages([])
+      }
+    } catch (err) {
+      setError('Failed to clear history')
+    }
+  }
+
+  const sendMessage = async (text) => {
+    const messageText = text || input.trim()
+    if (!messageText) return
+    if (loading) return
+
+    setError('')
+    setInput('')
+
+    const userMessage = {
+      role: 'user',
+      content: messageText,
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     }
 
-    useEffect(() => {
-        scrollBottom()
-    }, [messages, loading])
+    setMessages(prev => [...prev, userMessage])
+    setLoading(true)
 
-    const sendMessage = async (text) => {
-        const messageText = text || input.trim()
-        if (!messageText) return
-        if (loading) return
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        setError('You are not logged in. Please login again.')
+        setLoading(false)
+        return
+      }
 
-        setError('')
-        setInput('')
+      const res = await fetch(`${API}/ai/chat`, {
+        method: 'POST',
+        headers: getHeaders(),
+        body: JSON.stringify({
+          message: messageText,
+          history: messages.slice(-6).map(m => ({
+            role: m.role,
+            content: m.content
+          }))
+        })
+      })
 
-        const userMessage = {
-            role: 'user',
-            content: messageText,
-            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) //locale,options
-        }
+      const data = await res.json()
 
-        setMessages(prev => [...prev, userMessage])
-        setLoading(true)
+      if (!res.ok) {
+        setError(data.detail || 'Failed to get response')
+        setLoading(false)
+        return
+      }
 
-        try {
-            const token = localStorage.getItem('token')
-            if (!token) {
-                setError('you\'re not logged in')
-                setLoading(false)
-                return
-            }
+      const assistantMessage = {
+        role: 'assistant',
+        content: data.response,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      }
 
-            const res = await fetch(`${API}/ai/chat`, {
-                method: 'POST',
-                headers: getHeaders(),
-                body: JSON.stringify({
-                    message: messageText,
-                    history: messages.slice(-6).map(m => ({
-                        role: m.role,
-                        content: m.content
-                    }))
-                })
+      setMessages(prev => [...prev, assistantMessage])
 
-            })
-
-            const data = await res.json()
-            if (!res.ok) {
-                setError(data.detail || 'failed to get response')
-                setLoading(false)
-                return
-
-            }
-
-            const assistantMessage = {
-                role: 'assistant',
-                content: data.response,
-                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-            }
-
-            setMessages(prev => [...prev, assistantMessage])
-        } catch (err) {
-            setError('Network error - is the server running')
-
-        } finally {
-            setLoading(false)
-        }
-
+    } catch (err) {
+      setError('Network error — is the server running?')
+    } finally {
+      setLoading(false)
     }
+  }
 
-    const handleKeyDown = (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault()
-            sendMessage()
-        }
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      sendMessage()
     }
+  }
 
-    return (
-        <div className="chat-container">
-            <div className="chat-header">
-                <h1>🤖 AI Assistant</h1>
-                <p>Ask anything about your tasks</p>
-            </div>
-
-            {error && <p className="error-msg">{error}</p>}
-
-
-            {messages.length === 0 && (
-                <div className="empty-chat">
-                    <div className="big-icon">🧠</div>
-                    <p>ask me anything about your tasks</p>
-                </div>
-
-            )}
-
-            <div className="chat-messages">
-                {messages.map((msg, index) => (
-                    <div key={index} className={`message ${msg.role}`}>
-                        <div className="message-bubble">{msg.content}</div>
-                        <span className="message-time">{msg.time}</span>
-                    </div>
-                ))}
-
-                {loading && (
-                    <div className="message assistant">
-                        <div className="typing-indicator">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-                    </div>
-                )}
-
-                <div ref={messagesEndRef} />
-            </div>
-
-            <div className="suggestions">
-                {SUGGESTIONS.map((s, i) => (
-                    <button
-                        key={i}
-                        className="suggestion-chip"
-                        onClick={() => sendMessage(s)}
-                        disabled={loading}>
-                        {s}
-                    </button>
-                ))}
-
-            </div>
-
-            <div className="chat-input-area">
-                <textarea
-                    placeholder="Ask me anything...(Enter to send,Shift + Enter to new line)"
-                    value={input}
-                    onChange={e => setInput(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                    rows={1}
-                    disabled={loading} />
-
-                <button
-                    className="send-btn"
-                    onClick={() => sendMessage()}
-                    disabled={loading || !input.trim()}>{loading ? '...' : 'Send'}</button>
-
-            </div>
-
+  return (
+    <div className="chat-container">
+      <div className="chat-header">
+        <div>
+          <h1>🤖 AI Assistant</h1>
+          <p>Ask anything about your tasks and expenses</p>
         </div>
-    )
+        <button
+          className="clear-btn"
+          onClick={clearHistory}
+          disabled={messages.length === 0}
+        >
+          Clear History
+        </button>
+      </div>
 
+      {error && <p className="error-msg">⚠️ {error}</p>}
 
+      {historyLoading ? (
+        <div className="empty-chat">
+          <p>Loading chat history...</p>
+        </div>
+      ) : messages.length === 0 ? (
+        <div className="empty-chat">
+          <div className="big-icon">🧠</div>
+          <p>Ask me anything about your tasks and expenses!</p>
+        </div>
+      ) : null}
+
+      <div className="chat-messages">
+        {messages.map((msg, index) => (
+          <div key={index} className={`message ${msg.role}`}>
+            <div className="message-bubble">{msg.content}</div>
+            <span className="message-time">{msg.time}</span>
+          </div>
+        ))}
+
+        {loading && (
+          <div className="message assistant">
+            <div className="typing-indicator">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+        )}
+
+        <div ref={messagesEndRef} />
+      </div>
+
+      <div className="suggestions">
+        {SUGGESTIONS.map((s, i) => (
+          <button
+            key={i}
+            className="suggestion-chip"
+            onClick={() => sendMessage(s)}
+            disabled={loading}
+          >
+            {s}
+          </button>
+        ))}
+      </div>
+
+      <div className="chat-input-area">
+        <textarea
+          placeholder="Ask me anything... (Enter to send, Shift+Enter for new line)"
+          value={input}
+          onChange={e => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+          rows={1}
+          disabled={loading}
+        />
+        <button
+          className="send-btn"
+          onClick={() => sendMessage()}
+          disabled={loading || !input.trim()}
+        >
+          {loading ? '...' : 'Send'}
+        </button>
+      </div>
+    </div>
+  )
 }
 
 export default Chat
