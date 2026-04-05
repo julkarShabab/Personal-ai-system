@@ -1,11 +1,12 @@
 .layout {
   display: flex;
   min-height: 100vh;
+  background: var(--bg);
 }
 
 .main-content {
-  margin-left: 240px;
+  margin-left: 260px;
   flex: 1;
-  background: #f0f2f5;
   min-height: 100vh;
+  background: var(--bg);
 }
