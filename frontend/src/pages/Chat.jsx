@@ -8,7 +8,6 @@ const SUGGESTIONS = [
   "What tasks are pending?",
   "Add task: finish project report tomorrow",
   "Add food expense 450 BDT",
-  "Complete task: check2",
   "Edit food expense to 250 BDT",
   "Summarize my expenses this month"
 ]
